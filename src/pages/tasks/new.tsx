@@ -26,13 +26,20 @@ export default function newPage() {
   };
 
   const createTask = async (task: Task) => {
-    await fetch("http://localhost:3000/api/tasks", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(task),
-    });
+    try{
+      const response = await fetch("http://localhost:3000/api/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: task,
+      });
+      const data = await response.json()
+      console.log(data)
+    }catch (error){
+      console.error(error)
+      return Promise.reject(error)
+    }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -41,7 +48,7 @@ export default function newPage() {
     try {
       await createTask(task);
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
   };
 
